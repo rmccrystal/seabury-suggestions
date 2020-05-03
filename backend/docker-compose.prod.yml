@@ -1,0 +1,15 @@
+# Note: This file is meant for use on my server with nginx-proxy set up
+version: '3'
+
+services:
+  website:
+    build: .
+    environment:
+      - VIRTUAL_HOST=test.draven.cc
+      - LETSENCRYPT_HOST=test.draven.cc
+      - LETSENCRYPT_EMAIL=rrmccrystal@gmail.com
+
+networks:
+  default:
+    external:
+      name: draven_default

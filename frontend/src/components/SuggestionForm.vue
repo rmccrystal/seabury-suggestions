@@ -1,8 +1,8 @@
 <template>
   <div class="suggestion-form-container" v-if="!submitted">
     <p class="text-h2">Make a suggestion</p>
-    <p class="text-subtitle1">Your opinion matters. Your suggestion will be anonymously sent to the student council for
-      review.</p>
+    <p class="text-subtitle1">Your opinion matters. Your suggestion will be anonymously sent to the
+      student council for review.</p>
     <div class="suggestion-form">
       <q-input
         v-model="title"
@@ -32,7 +32,8 @@
   <div class="form-submitted-message" v-else>
     <p class="text-h2">Thank you!</p>
     <p class="text-subtitle1">
-      Your suggestion will be reviewed by the student council and may be responded to on the posts page.
+      Your suggestion will be reviewed by the student
+      council and may be responded to on the posts page.
     </p>
     <q-btn
       @click="reset"
@@ -44,11 +45,9 @@
 </template>
 
 <script lang="ts">
-import { reactive, ref } from '@vue/composition-api';
-import Vue from 'Vue';
-import {submitSuggestion} from "src/api/suggestionForm";
-import {Suggestion} from "components/models";
-import {Notify} from "quasar";
+import { ref } from '@vue/composition-api';
+import { submitSuggestion } from 'src/api/suggestionForm';
+import { Notify } from 'quasar';
 
 export default {
   name: 'SuggestionForm',
@@ -62,15 +61,15 @@ export default {
     const loading = ref(false);
 
     const submit = () => {
-      if(content.value.length < 10) {
+      if (content.value.length < 10) {
         Notify.create({
           message: 'Your message must be over 10 characters',
-          position: 'top'
-        })
-        return
+          position: 'top',
+        });
+        return;
       }
-      loading.value = true
-      submitSuggestion({title: title.value, content: content.value})
+      loading.value = true;
+      submitSuggestion({ title: title.value, content: content.value })
         .then(() => {
           // we successfully submitted
           submitted.value = true;
@@ -85,18 +84,18 @@ export default {
             message: `Error submitting: ${err}`,
             position: 'top',
             type: 'negative',
-          })
+          });
           // notify error
-        })
+        });
     };
 
     // runs when you click make another suggestion
     const reset = () => {
       submitted.value = false;
-    }
+    };
 
     return {
-      title, content, submitted, submit, loading, reset
+      title, content, submitted, submit, loading, reset,
     };
   },
 };
