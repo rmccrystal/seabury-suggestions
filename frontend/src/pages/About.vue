@@ -1,6 +1,6 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    about
+  <q-page class="row justify-evenly">
+    <h2>About</h2>
   </q-page>
 </template>
 

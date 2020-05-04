@@ -1,8 +1,7 @@
 <template>
   <div class="suggestion-form-container" v-if="!submitted">
     <p class="text-h2">Make a suggestion</p>
-    <p class="text-subtitle1">Your opinion matters. Your suggestion will be anonymously sent to the
-      student council for review.</p>
+    <p class="text-subtitle1">Your suggestion will be anonymously sent to the student council for review.</p>
     <div class="suggestion-form">
       <q-input
         v-model="title"
@@ -63,7 +62,7 @@ export default {
     const submit = () => {
       if (content.value.length < 10) {
         Notify.create({
-          message: 'Your message must be over 10 characters',
+          message: 'Your message must be 10 or more characters',
           position: 'top',
         });
         return;
@@ -81,7 +80,7 @@ export default {
           console.log(`Error submitting: ${err}`);
           loading.value = false;
           Notify.create({
-            message: `Error submitting: ${err}`,
+            message: err.toString(),
             position: 'top',
             type: 'negative',
           });

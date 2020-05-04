@@ -1,9 +1,9 @@
 import express from 'express';
+import suggestions from './suggestions';
 
-var router = express.Router();
+const router = express.Router();
 
-router.get("/test/", ((req, res) => {
-    res.send("hello world")
-}));
+router.use('/suggestions', require('./suggestions').default);
+router.use('/users', require('./users').default);
 
 export default router;

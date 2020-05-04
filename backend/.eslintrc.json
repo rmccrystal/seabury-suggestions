@@ -20,5 +20,8 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "semi": "warn",
+        "quotes": [2, "single"],
+        "no-console": "off"
     }
 }
