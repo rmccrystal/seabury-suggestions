@@ -1,6 +1,6 @@
 import { Suggestion } from 'components/models';
 import Vue from 'vue';
-import axios from "axios";
+import axios from 'axios';
 
 export async function submitSuggestion(suggestion: Suggestion): Promise<any> {
   const response = await axios.post('/api/suggestions/create', suggestion);

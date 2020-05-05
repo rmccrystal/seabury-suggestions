@@ -8,7 +8,7 @@ const SuggestionSchema = new Schema({
   content: {
     type: String,
     required: true,
-    minlength: 20,
+    minlength: 10,
     maxlength: 10000,
   },
   date: {
