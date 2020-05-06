@@ -1,5 +1,5 @@
 <template>
-  <q-page class="page row justify-evenly">
+  <q-page class="row items-center justify-evenly">
     <SurveyForm />
   </q-page>
 </template>

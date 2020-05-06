@@ -6,5 +6,12 @@ export interface Suggestion {
 export interface Survey {
   question: string;
   options: string[];
-  id: string;
+  _id: string;
+}
+
+export interface SurveyResults {
+  question: string;
+  results: [{option: string, result: number}];
+  totalResults: number;
+  _id: string;
 }

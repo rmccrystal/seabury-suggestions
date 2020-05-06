@@ -1,44 +1,84 @@
 <template>
-  <div>
-    <div v-if="!loading">
-      <p class="text-h3">{{survey.question}}</p>
-      <q-option-group
-        :options="surveyOptions"
-        type="radio"
-        v-model="selectedOption"
+  <q-card v-if="displayState === 'SURVEY'" flat bordered class="survey-card bg-grey-1">
+    <div class="text-h5">{{survey.question}}</div>
+    <q-option-group
+      :options="surveyOptions"
+      type="radio"
+      v-model="selectedOption"
+    />
+    <q-card-actions>
+      <q-btn
+        label="Submit"
+        :loading="submitResponseLoading"
+        style="width: 100%"
+        type="submit"
+        @click="submitResponse"
       />
+    </q-card-actions>
+  </q-card>
+  <q-card v-else-if="displayState === 'RESULTS'" flat bordered class="bg-grey-1 survey-card">
+    <div class="text-h5">{{results.question}}</div>
+    <div class="result"
+         :key="index"
+         v-for="(result, index) in results.results">
+      <div class="text-subtitle1">{{result.option}}</div>
+      <div
+        class="result-bar text-subtitle2"
+        :style="{width: `${(result.result/results.totalResults) * 100}%`}">
+        {{result.result}}
+      </div>
     </div>
-    <div v-else>
-      <q-spinner
-        color="primary"
-        size="4rem"
-        :thickness="2"
-      />
-    </div>
+  </q-card>
+  <div v-else-if="displayState === 'SURVEY_LOADING' || displayState === 'RESULTS_LOADING'">
+    <q-spinner
+      color="primary"
+      size="4rem"
+      :thickness="2"
+    />
   </div>
 </template>
 
 <script lang="ts">
-  import {Survey} from './models';
-  import {getLatestSurvey} from '../api/api';
+  import {Survey, SurveyResults} from './models';
+  import {getLatestSurvey, getSurveyResults, submitSurvey} from '../api/api';
   import {computed, onMounted, ref, Ref} from '@vue/composition-api';
   import {Notify} from 'quasar';
+
+  type DisplayState = 'SURVEY_LOADING' | 'SURVEY' | 'RESULTS_LOADING' | 'RESULTS'
 
   export default {
     name: 'SurveyForm',
     setup() {
-      const loading = ref(true);
+      const displayState: Ref<DisplayState> = ref('SURVEY_LOADING');
       const survey: Ref<Survey> = ref({});
 
       const updateSurvey = () => {
-        loading.value = true;
+        displayState.value = 'SURVEY_LOADING';
         getLatestSurvey()
           .then(newSurvey => {
-            loading.value = false;
+            displayState.value = 'SURVEY';
             survey.value = newSurvey;
           })
           .catch(err => {
-            loading.value = false;
+            displayState.value = 'SURVEY';
+            Notify.create({
+              message: err.toString(),
+              position: 'top',
+              type: 'negative',
+            });
+          })
+      }
+      onMounted(updateSurvey);
+
+      const results: Ref<SurveyResults> = ref({})
+      const loadResults = () => {
+        getSurveyResults(survey.value._id)
+          .then(resultsResponse => {
+            displayState.value = 'RESULTS';
+            results.value = resultsResponse;
+          })
+          .catch(err => {
+            displayState.value = 'RESULTS';
             Notify.create({
               message: err.toString(),
               position: 'top',
@@ -47,17 +87,73 @@
           })
       }
 
-      onMounted(updateSurvey);
+      setInterval(() => {
+        // Only load results if we are on the results page and results have been loaded already
+        if(results.value._id && displayState.value === 'RESULTS') {
+          // Get the survey results from the current displayed survey
+          getSurveyResults(results.value._id)
+            .then(resultsResponse => {
+              results.value = resultsResponse
+            })
+        }
+      }, 1000);
 
       // these are used with the form itself
       const surveyOptions = computed(() => survey.value.options.map((value, index) => ({label: value, value: index})))
       const selectedOption = ref(0);
 
-      return {loading, survey, selectedOption, surveyOptions}
+      const submitResponseLoading = ref(false)
+      const submitResponse = () => {
+        submitResponseLoading.value = true;
+        submitSurvey(survey.value._id, selectedOption.value)
+          .then(() => {
+            submitResponseLoading.value = false;
+            displayState.value = 'RESULTS_LOADING'
+            loadResults();
+          })
+          .catch(err => {
+            displayState.value = 'SURVEY';
+            submitResponseLoading.value = false;
+            Notify.create({
+              message: err.toString(),
+              position: 'top',
+              type: 'negative',
+            });
+          })
+      }
+
+
+      return {
+        displayState,
+        survey,
+        selectedOption,
+        surveyOptions,
+        submitResponse,
+        submitResponseLoading,
+        results
+      }
     },
   };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  .survey-card {
+    width: 80%;
+    max-width: 40rem;
+    padding: 1rem;
+  }
 
+  .result {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .result-bar {
+    background-color: $blue-4;
+    border: $blue-7 solid 1px;
+    border-radius: 3px;
+    text-align: center;
+    min-width: 1rem;
+    transition: width 0.4s;
+  }
 </style>
