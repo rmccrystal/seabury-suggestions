@@ -34,6 +34,10 @@
           link: '/',
         },
         {
+          label: 'Survey',
+          link: '/survey'
+        },
+        {
           label: 'Posts',
           link: '/posts',
         },
