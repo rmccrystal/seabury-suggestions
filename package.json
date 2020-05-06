@@ -5,7 +5,6 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --watch src --exec ts-node src/index.ts",
-    "heroku-prebuild": "cd frontend && yarn",
     "build": "cd frontend && npm run build",
     "start": "ts-node src/index.ts",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore ./ --fix"
