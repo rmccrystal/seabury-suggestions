@@ -43,7 +43,7 @@
         },
       ]);
 
-      const tab = ref('/');
+      const tab = ref(ctx.root.$router.currentRoute.path);
       watchEffect(() => {
         ctx.root.$router.push(tab.value);
       })

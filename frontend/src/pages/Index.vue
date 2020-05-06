@@ -1,5 +1,5 @@
 <template>
-  <q-page class="row justify-evenly">
+  <q-page class="page row justify-evenly">
     <SuggestionForm class="suggestions"/>
   </q-page>
 </template>
@@ -12,9 +12,3 @@ export default {
   components: { SuggestionForm },
 };
 </script>
-
-<style>
-  .suggestions {
-    padding-top: 5%;
-  }
-</style>

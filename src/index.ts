@@ -8,7 +8,6 @@ import api from './api/api';
 const app = express();
 
 app.use(morgan('common'));
-app.use(express.static('frontend/dist/spa'));
 app.use(bodyParser.json());
 app.use('/api', api);
 app.get('*', (req, res) => {
