@@ -9,8 +9,9 @@ RUN yarn
 
 # Install frontend deps
 WORKDIR /usr/src/app/frontend
-COPY frontend/pacakge.json ./
-COPY frontend/yarn.lock ./
+COPY frontend/package.json .
+COPY frontend/yarn.lock .
+RUN yarn
 
 WORKDIR /usr/src/app
 COPY . .
@@ -18,4 +19,4 @@ RUN yarn build
 
 EXPOSE 3000
 
-RUN npm run start
+CMD npm run start

@@ -5,9 +5,7 @@ services:
   website:
     build: .
     environment:
-      - VIRTUAL_HOST=test.draven.cc
-      - LETSENCRYPT_HOST=test.draven.cc
-      - LETSENCRYPT_EMAIL=rrmccrystal@gmail.com
+      - VIRTUAL_HOST=seabury.life
 
 networks:
   default:
