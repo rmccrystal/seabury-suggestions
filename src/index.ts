@@ -15,14 +15,16 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(`${__dirname}/../frontend/dist/spa/index.html`));
 });
 
-const MONGOOSE_URI = 'mongodb+srv://draven:sNIsOk5iJxCmlQtf@cluster0-yccmv.mongodb.net/seabury-suggestions-dev?retryWrites=true&w=majority' || process.env.MONGOOSE_URI;
+const MONGOOSE_DB = process.env.MONGOOSE_DB || 'seabury-suggestions-dev';
+const MONGOOSE_URI = `mongodb+srv://draven:sNIsOk5iJxCmlQtf@cluster0-yccmv.mongodb.net/${MONGOOSE_DB}?retryWrites=true&w=majority` || process.env.MONGOOSE_URI!;
 
 mongoose
   .connect(MONGOOSE_URI, { useNewUrlParser: true })
   .then(() => console.log('Mongoose connected'))
   .catch(() => console.error);
 
-const PORT = 3000 || process.env.PORT;
+const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
 });

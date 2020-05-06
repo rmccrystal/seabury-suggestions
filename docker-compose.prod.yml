@@ -6,6 +6,7 @@ services:
     build: .
     environment:
       - VIRTUAL_HOST=seabury.life
+      - MONGOOSE_DB=seabury-suggestions
 
 networks:
   default:
