@@ -45,7 +45,7 @@
 
 <script lang="ts">
 import { ref } from '@vue/composition-api';
-import { submitSuggestion } from 'src/api/suggestionForm';
+import { submitSuggestion } from 'src/api/api';
 import { Notify } from 'quasar';
 
 export default {

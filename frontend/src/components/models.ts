@@ -4,5 +4,7 @@ export interface Suggestion {
 }
 
 export interface Survey {
+  question: string;
   options: string[];
+  id: string;
 }

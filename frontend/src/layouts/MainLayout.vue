@@ -2,7 +2,6 @@
   <q-layout view="hHh lpR fFf">
     <q-header bordered class="bg-indigo text-white">
       <q-toolbar>
-        {{counter}}
         <q-tabs v-model="tab" class="tabs" shrink>
           <q-tab
             v-for="(link, index) in links"

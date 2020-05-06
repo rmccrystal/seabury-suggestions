@@ -1,13 +1,15 @@
 <template>
   <q-page class="page row justify-evenly">
-    <h2>survey</h2>
+    <SurveyForm />
   </q-page>
 </template>
 
 <script>
 
+import SurveyForm from '../components/SurveyForm';
 export default {
   name: 'PageSurvey',
+  components: {SurveyForm},
 };
 </script>
 
