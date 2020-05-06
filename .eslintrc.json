@@ -22,6 +22,7 @@
     "rules": {
         "semi": "warn",
         "quotes": [2, "single"],
-        "no-console": "off"
+        "no-console": "off",
+        "linebreak-style": "off"
     }
 }
