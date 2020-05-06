@@ -12,7 +12,7 @@ app.use(express.static('../frontend/dist/spa'));
 app.use(bodyParser.json());
 app.use('/api', api);
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/../../frontend/dist/spa/index.html`));
+  res.sendFile(path.join(`${__dirname}/../frontend/dist/spa/index.html`));
 });
 
 const MONGOOSE_URI = 'mongodb+srv://draven:sNIsOk5iJxCmlQtf@cluster0-yccmv.mongodb.net/seabury-suggestions-dev?retryWrites=true&w=majority' || process.env.MONGOOSE_URI;
