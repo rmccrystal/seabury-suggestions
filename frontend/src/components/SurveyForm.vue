@@ -8,7 +8,7 @@
   export default {
     name: 'SurveyForm',
     setup() {
-
+      return {}
     },
   };
 </script>
