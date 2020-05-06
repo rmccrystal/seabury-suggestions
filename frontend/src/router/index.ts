@@ -17,7 +17,7 @@ export default route(({ Vue }) => {
     // Leave these as is and change from quasar.conf.js instead!
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
-    mode: process.env.VUE_ROUTER_MODE,
+    mode: 'history',
     base: process.env.VUE_ROUTER_BASE,
   });
 
