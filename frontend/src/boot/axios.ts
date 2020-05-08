@@ -11,7 +11,7 @@ declare module 'vue/types/vue' {
 export default boot(({ Vue }) => {
   Vue.prototype.$axios = axios;
   const session: any = LocalStorage.getItem('session');
-  if(session.token) {
+  if(session?.token) {
     axios.defaults.headers.common['Auth-Token'] = session.token;
   }
 });
