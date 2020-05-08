@@ -7,7 +7,7 @@ const routes: RouteConfig[] = [
     children: [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'posts', component: () => import('pages/Posts.vue') },
-      //{ path: 'survey', component: () => import('pages/Survey.vue') },
+      { path: 'survey', component: () => import('pages/Survey.vue') },
     ],
   },
   {

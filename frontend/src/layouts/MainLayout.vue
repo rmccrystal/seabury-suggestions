@@ -36,10 +36,10 @@
           label: 'Survey',
           link: '/survey'
         },
-        {
-          label: 'Posts',
-          link: '/posts',
-        },
+        // {
+        //   label: 'Posts',
+        //   link: '/posts',
+        // },
       ]);
 
       const tab = ref(ctx.root.$router.currentRoute.path);
