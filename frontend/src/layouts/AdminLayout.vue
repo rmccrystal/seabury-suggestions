@@ -75,6 +75,7 @@
 
       const tab = ref(ctx.root.$router.currentRoute.path);
       watchEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         ctx.root.$router.push(tab.value).catch(() => {});
       })
 
