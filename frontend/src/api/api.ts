@@ -23,11 +23,9 @@ export async function submitSuggestion(suggestion: Suggestion): Promise<any> {
 
 export async function getLatestSurvey(): Promise<Survey> {
   const resp: Survey = await getResponse('/api/survey/latest')
-  console.log(resp)
   if(!(resp.canSubmit === false)) {
     // if the server says we can submit, check with the client
     const submittedSurveys: SubmittedSurveys | null = LocalStorage.getItem('submittedSurveys');
-    console.log(submittedSurveys)
     if(submittedSurveys && submittedSurveys.includes(resp._id)) {
       resp.canSubmit = false;
     }

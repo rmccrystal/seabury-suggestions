@@ -94,7 +94,7 @@ export default {
     };
 
     return {
-      title, content, submitted, create: submit, loading, reset,
+      title, content, submitted, submit, loading, reset,
     };
   },
 };
