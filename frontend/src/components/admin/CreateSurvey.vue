@@ -22,12 +22,12 @@
 </template>
 
 <script lang="ts">
-  import {ref} from '@vue/composition-api'
+  import {ref, SetupContext} from '@vue/composition-api'
   import {createSurvey} from "src/api/adminApi";
   import {Notify} from "quasar";
     export default {
         name: 'CreateSurvey',
-      setup() {
+      setup({}, ctx: SetupContext) {
         const question = ref('')
         const options = ref([''])
         const test = ref('')
@@ -45,7 +45,6 @@
             .then(() => {
               question.value = ''
               options.value = ['']
-
             })
             .catch(err => {
               Notify.create({

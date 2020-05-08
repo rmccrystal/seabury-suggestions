@@ -126,4 +126,10 @@ router.post('/delete', authAdmin, async (req, res) => {
     return res.send({success: true})
 })
 
+router.post('/clearResponses', authAdmin, async (req, res) => {
+    let {id} = req.body;
+    await SurveyEntryModel.deleteMany({survey: id}).exec()
+    return res.send({success: true})
+})
+
 export default router;

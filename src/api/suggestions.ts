@@ -2,6 +2,7 @@ import express from 'express';
 import { Suggestion } from './models';
 import SuggestionModel from '../models/SuggestionModel';
 import {auth, authAdmin} from "../middleware/auth";
+import SurveyEntryModel from "../models/SurveyEntryModel";
 
 // /api/suggestions
 const router = express.Router();
@@ -44,5 +45,6 @@ router.post('/delete', authAdmin, async (req, res) => {
   await SuggestionModel.deleteOne({_id: id}).exec()
   return res.send({success: true})
 })
+
 
 export default router;

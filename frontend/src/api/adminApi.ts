@@ -52,3 +52,7 @@ export async function getAllSurveys(): Promise<Survey[]> {
 export async function deleteSurvey(id: string): Promise<any> {
   return await getAuthorizedResponse('/api/survey/delete', {id})
 }
+
+export async function clearResponses(id: string): Promise<any> {
+  return await getAuthorizedResponse('/api/survey/clearResponses', {id})
+}
