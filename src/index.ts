@@ -28,6 +28,11 @@ mongoose
 const PORT = process.env.PORT || 3000;
 
 async function createDefaultUser(username: string, password: string) {
+  const users: Document[] | any[] = await UserModel.find({username}).exec();
+  if(users.map(user => user.username).includes(username)) {
+      console.log("didn't need to create user")
+    return
+  }
   const passwordHash = await hash(password, await genSalt(10));
 
   const newUser = new UserModel({
