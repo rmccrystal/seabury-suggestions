@@ -46,7 +46,7 @@ router.post('/create', authAdmin, async (req, res) => {
             {expiresIn: 3600}
         )
 
-        return res.json({success: true, id: newUser.id, token: token})
+        return res.json({success: true, data: {id: newUser.id, token: token}})
     } catch (e) {
         return res.json({success: false, error: e.message || e || 'Unknown error occurred'});
     }
@@ -76,10 +76,10 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(
             {id: user.id},
             config.jwtSecret,
-            {expiresIn: 3600}
+            {expiresIn: 86400}
         )
 
-        return res.json({success: true, id: user.id, roles: user.roles, token: token})
+        return res.json({success: true, data: {id: user.id, roles: user.roles, token: token}})
     } catch (e) {
         return res.json({success: false, error: e.message || e || 'Unknown error occurred'});
     }

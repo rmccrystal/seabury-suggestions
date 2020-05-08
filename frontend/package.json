@@ -14,9 +14,11 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@types/moment": "^2.13.0",
     "@vue/composition-api": "^0.5.0",
     "axios": "^0.18.1",
     "eslint-config-prettier": "^6.11.0",
+    "moment": "^2.25.3",
     "prettier": "^2.0.5",
     "prettier-eslint": "^9.0.1",
     "quasar": "^1.9.5"

@@ -6,7 +6,7 @@ services:
     build: .
     environment:
       - VIRTUAL_HOST=seabury.life
-      - MONGOOSE_DB=seabury-suggestions
+      - MONGOOSE_URI=mongodb+srv://draven:sNIsOk5iJxCmlQtf@cluster0-yccmv.mongodb.net/seabury-suggestions?retryWrites=true&w=majority
 
 networks:
   default:

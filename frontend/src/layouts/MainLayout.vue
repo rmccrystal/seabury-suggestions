@@ -44,7 +44,7 @@
 
       const tab = ref(ctx.root.$router.currentRoute.path);
       watchEffect(() => {
-        ctx.root.$router.push(tab.value);
+        ctx.root.$router.push(tab.value).catch(() => {});
       })
 
       return {links, tab};

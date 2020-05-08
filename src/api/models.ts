@@ -3,12 +3,12 @@ export interface Suggestion {
   content: string;
 }
 
-
 export interface Survey {
-  id: string;
+  question: string;
   options: string[];
+  canSubmit: boolean;
+  _id: string;
 }
-
 
 export interface SurveyResults {
   question: string;

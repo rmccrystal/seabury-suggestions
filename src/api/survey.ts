@@ -1,18 +1,26 @@
 import express from 'express';
 import SurveyModel from "../models/SurveyModel";
 import SurveyEntryModel from "../models/SurveyEntryModel";
-import {authAdmin} from "../middleware/auth";
-import {SurveyResults} from "./models";
+import {auth, authAdmin} from "../middleware/auth";
+import {Survey, SurveyResults} from "./models";
+import SuggestionModel from "../models/SuggestionModel";
 
 const router = express.Router();
+
+async function canSubmit(ip: string, surveyId: string): Promise<boolean> {
+    let responses = await SurveyEntryModel.find({ip, survey: surveyId}).exec();
+    console.log(responses)
+    return responses.length < 4;    // only allow 4 responses per ip
+}
 
 router.post('/latest', async (req, res) => {
     const surveyList = await SurveyModel.find({}).sort('-date').exec();
     if (surveyList.length == 0) {
         return res.json({success: false, error: 'There are no surveys'});
     }
-    const survey = surveyList[0];
-    return res.json({success: true, survey});
+    const survey: Survey | any = surveyList[0];
+    survey['canSubmit'] = await canSubmit(req.ip, survey._id);
+    return res.json({success: true, data: survey});
 });
 
 router.post('/create', authAdmin, async (req, res) => {
@@ -30,7 +38,7 @@ router.post('/create', authAdmin, async (req, res) => {
 
     const newSurvey = new SurveyModel({question, options});
     await newSurvey.save();
-    return res.json({success: true, survey: newSurvey})
+    return res.json({success: true, data: newSurvey})
 })
 
 router.post('/submit', async (req, res) => {
@@ -40,6 +48,9 @@ router.post('/submit', async (req, res) => {
     }
     if (!id) {
         return res.json({success: false, error: 'No survey ID provided'})
+    }
+    if(!await canSubmit(req.ip, id)) {
+        return res.json({success: false, error: 'You have submitted too many times from the same IP'})
     }
 
     const survey: Document | any = await SurveyModel.findById(id).exec();
@@ -51,7 +62,7 @@ router.post('/submit', async (req, res) => {
         return res.json({success: false, error: 'Invalid selection'})
     }
 
-    const entry = new SurveyEntryModel({choice: choice, survey: survey._id})
+    const entry = new SurveyEntryModel({choice: choice, survey: survey._id, ip: req.ip})
     await entry.save();
 
     return res.json({success: true});
@@ -101,7 +112,18 @@ router.post('/results', async (req, res) => {
     // @ts-ignore
     let surveyResults: SurveyResults = {_id: survey._id, results: results, question: survey.question, totalResults: totalResults};
 
-    return res.json({success: true, results: surveyResults})
+    return res.json({success: true, data: surveyResults})
+})
+
+router.post('/getAll', auth, async (req, res) => {
+    const surveyList = await SurveyModel.find({}).sort('-date').exec();
+    return res.json({success: true, data: surveyList});
+})
+
+router.post('/delete', authAdmin, async (req, res) => {
+    let {id} = req.body;
+    await SurveyModel.deleteOne({_id: id}).exec()
+    return res.send({success: true})
 })
 
 export default router;

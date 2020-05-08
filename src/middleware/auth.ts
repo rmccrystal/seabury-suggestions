@@ -4,9 +4,9 @@ import {NextFunction, Request, Response} from "express";
 import UserModel from "../models/UserModel";
 
 export async function auth(req: Request | any, res: Response, next: NextFunction) {
-    const token = req.header('x-auth-token');
+    const token = req.header('Auth-Token');
 
-    if(!token) res.status(401).json({success: false, error: 'No token provided'});
+    if(!token) res.status(401).json({success: false, error: 'Not authorized'});
 
     try {
         // verify token
@@ -16,12 +16,13 @@ export async function auth(req: Request | any, res: Response, next: NextFunction
         req.user = await UserModel.findById(decoded.id).exec();
         next();
     } catch (e) {
-        return res.json({success: false, error: e.message || e || 'Unknown error occurred'})
+        return res.status(401).json({success: false, error: e.message || e || 'Unknown error occurred'})
     }
 }
 
 export async function authAdmin(req: Request | any, res: Response, next: NextFunction) {
     await auth(req, res, () => {
+        console.log(req.user)
         if(req.user.roles?.includes('admin')) {
             next();
         } else {

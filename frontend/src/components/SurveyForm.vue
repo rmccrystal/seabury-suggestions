@@ -52,24 +52,6 @@
       const displayState: Ref<DisplayState> = ref('SURVEY_LOADING');
       const survey: Ref<Survey> = ref({});
 
-      const updateSurvey = () => {
-        displayState.value = 'SURVEY_LOADING';
-        getLatestSurvey()
-          .then(newSurvey => {
-            displayState.value = 'SURVEY';
-            survey.value = newSurvey;
-          })
-          .catch(err => {
-            displayState.value = 'SURVEY';
-            Notify.create({
-              message: err.toString(),
-              position: 'top',
-              type: 'negative',
-            });
-          })
-      }
-      onMounted(updateSurvey);
-
       const results: Ref<SurveyResults> = ref({})
       const loadResults = () => {
         getSurveyResults(survey.value._id)
@@ -86,6 +68,31 @@
             });
           })
       }
+
+      const updateSurvey = () => {
+        displayState.value = 'SURVEY_LOADING';
+        getLatestSurvey()
+          .then(newSurvey => {
+            survey.value = newSurvey;
+            // if we can't submit just go straight to results
+            if(newSurvey.canSubmit === false) {
+              displayState.value = 'RESULTS_LOADING'
+              loadResults();
+              return
+            } else {
+              displayState.value = 'SURVEY';
+            }
+          })
+          .catch(err => {
+            displayState.value = 'SURVEY';
+            Notify.create({
+              message: err.toString(),
+              position: 'top',
+              type: 'negative',
+            });
+          })
+      }
+      onMounted(updateSurvey);
 
       setInterval(() => {
         // Only load results if we are on the results page and results have been loaded already
