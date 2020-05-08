@@ -62,7 +62,7 @@
           })
       }
 
-      return {username, password, error, create: submit, loading}
+      return {username, password, error, submit, loading}
     }
   }
 </script>
