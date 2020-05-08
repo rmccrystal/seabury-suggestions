@@ -4,6 +4,8 @@ import path from 'path';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import api from './api/api';
+import {genSalt, hash} from "bcrypt";
+import UserModel from "./models/UserModel";
 
 const app = express();
 
@@ -25,6 +27,20 @@ mongoose
 
 const PORT = process.env.PORT || 3000;
 
+async function createDefaultUser(username: string, password: string) {
+  const passwordHash = await hash(password, await genSalt(10));
+
+  const newUser = new UserModel({
+    username,
+    password: passwordHash,
+    roles: ['admin']
+  });
+
+  // save new user to database
+  await newUser.save();
+}
+
+createDefaultUser('ryan', 'ZarE3Hh6abg9xa')
 
 app.listen(PORT, () => {
   console.log(`Backend running on port ${PORT}`);
