@@ -22,7 +22,7 @@ export async function submitSuggestion(suggestion: Suggestion): Promise<any> {
 }
 
 export async function getLatestSurvey(): Promise<Survey> {
-  let resp: Survey = await getResponse('/api/survey/latest')
+  const resp: Survey = await getResponse('/api/survey/latest')
   if(resp.canSubmit) {
     // if the server says we can submit, check with the client
     const submittedSurveys: SubmittedSurveys | null = LocalStorage.getItem('submittedSurveys');
